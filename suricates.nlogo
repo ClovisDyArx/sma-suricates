@@ -1,6 +1,13 @@
+;;;;;;;;;;;;;;;;;;;;;;
+; ┌───────────────┐
+; │               │
+; │ Attributs :   │
+; │               │
+; └───────────────┘
+;;;;;;;;;;;;;;;;;;;;;;
+
 breed [suricates suricate]
-breed [serpents serpent]
-;; créer d'autres breed pour les prédateurs
+breed [predators predator]
 
 suricates-own
 [
@@ -13,7 +20,7 @@ suricates-own
 ]
 
 ;; sûrement mieux de faire des sliders pour danger et spook..
-serpents-own
+predators-own
 [
   danger-level ; float : niveau de danger représenté
   spook-amount ; float : nombre de suricates nécessaire pour l'effrayer
@@ -24,17 +31,35 @@ patches-own [
   nest-scent           ;; number that is higher closer to the nest
 ]
 
+;;;;;;;;;;;;;;;;;;;;;;
+; ┌────────────┐
+; │            │
+; │ Setup :    │
+; │            │
+; └────────────┘
+;;;;;;;;;;;;;;;;;;;;;;
+
 to setup
-  clear-all
-  set-default-shape turtles "dog"
-  create-turtles population
-  [ set size 1.5
-    set color brown  ]
+  __clear-all-and-reset-ticks
   setup-patches
-  reset-ticks
+  create-suricates population
+   [
+    set shape "dog"
+    set size 2.5
+    move-to one-of patches with [nest?]
+    set color brown
+    set queen? false
+    set king? false
+    set adult? true
+    set sentinel? false
+    set audace courage * random-float 1
+    set acuité perception * random-float 1
+   ]
+  setup-alphas
 end
 
 to setup-patches
+  import-pcolors "img/savannah.png"
   ask patches
   [ setup-nest
     recolor-patch ]
@@ -48,26 +73,59 @@ to setup-nest
 end
 
 to recolor-patch
-  ;; give color to nest
   if nest?
-  [ set pcolor white ]
+  [ set pcolor brown ]
 end
 
+to setup-alphas
+  ask one-of suricates
+  [
+    set queen? true
+    set color orange
+  ]
+  ask one-of suricates with [not queen?]
+  [
+    set king? true
+    set color yellow
+  ]
+end
 
-to go  ;; forever button
-  ask turtles
+;;;;;;;;;;;;;;;;;;;;;;
+; ┌────────────────┐
+; │                │
+; │ Procédures :   │
+; │                │
+; └────────────────┘
+;;;;;;;;;;;;;;;;;;;;;;
+
+to go ; TODO
+  ask suricates
   [
     wiggle
+    if go-to-nest ; juste pour tester
+    [return-to-nest]
   ]
-  ; TODO
 end
 
-to return-to-nest  ;; turtle procedure
-  ifelse nest?
-  [
-    ; TODO
-    rt 180
-  ]
+to wiggle
+  rt random 40
+  lt random 40
+  fd 1
+  if not can-move? 1 [ rt 180 ]
+end
+
+;;;;;;;;;;;;;;;;;;;;;;
+; ┌──────────┐
+; │          │
+; │   Ant :  │
+; │          │
+; └──────────┘
+;;;;;;;;;;;;;;;;;;;;;;
+
+;;; Code repris et adapté des "Ants":
+
+to return-to-nest
+  if not nest?
   [
     uphill-nest-scent
   ]
@@ -86,17 +144,42 @@ to uphill-nest-scent  ;; turtle procedure
   ]
 end
 
-to wiggle  ;; turtle procedure
-  rt random 40
-  lt random 40
-  fd 1
-  if not can-move? 1 [ rt 180 ]
-end
-
 to-report nest-scent-at-angle [angle]
   let p patch-right-and-ahead angle 1
   if p = nobody [ report 0 ]
   report [nest-scent] of p
+end
+
+;;;;;;;;;;;;;;;;;;;;;;
+; ┌──────────┐
+; │          │
+; │ Spawn :  │
+; │          │
+; └──────────┘
+;;;;;;;;;;;;;;;;;;;;;;
+
+to spawn-snake
+  ; TODO
+end
+
+to spawn-tiger
+  ; TODO
+end
+
+;;;;;;;;;;;;;;;;;;;;;;
+; ┌──────────┐
+; │          │
+; │ Bonus :  │
+; │          │
+; └──────────┘
+;;;;;;;;;;;;;;;;;;;;;;
+
+to spawn-meerkats
+  ; TODO
+end
+
+to start-war
+  ; TODO
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -113,8 +196,8 @@ GRAPHICS-WINDOW
 1
 1
 0
-1
-1
+0
+0
 1
 -50
 50
@@ -127,40 +210,40 @@ ticks
 60.0
 
 SLIDER
-2
-77
-174
-110
+0
+180
+172
+213
 population
 population
 0
 30
-30.0
+10.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-2
-137
-174
-170
+0
+249
+172
+282
 nest-x-coord
 nest-x-coord
 -45
 45
-45.0
+-45.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-176
-137
-348
-170
+174
+249
+346
+282
 nest-y-coord
 nest-y-coord
 -45
@@ -172,10 +255,10 @@ NIL
 HORIZONTAL
 
 BUTTON
-69
-11
-132
-44
+64
+10
+127
+43
 GO !
 go
 T
@@ -207,14 +290,14 @@ NIL
 
 SLIDER
 0
-213
+323
 172
-246
+356
 courage
 courage
-0
+1
 10
-0.0
+1.0
 0.5
 1
 NIL
@@ -222,18 +305,137 @@ HORIZONTAL
 
 SLIDER
 176
-213
+323
 348
-246
+356
 perception
 perception
-0
+1
 10
-0.0
+1.0
 0.5
 1
 NIL
 HORIZONTAL
+
+TEXTBOX
+0
+305
+150
+323
+Propriétés Suricates
+12
+0.0
+1
+
+TEXTBOX
+0
+232
+150
+250
+Emplacement Terrier
+12
+0.0
+1
+
+SWITCH
+1205
+36
+1328
+69
+go-to-nest
+go-to-nest
+1
+1
+-1000
+
+BUTTON
+0
+82
+116
+115
+spawn-snake
+spawn-snake
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+120
+82
+228
+115
+spawn-tiger
+spawn-tiger
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+0
+534
+139
+567
+spawn-meerkats
+spawn-meerkats
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+142
+534
+232
+567
+start-war
+start-war
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+TEXTBOX
+3
+516
+39
+534
+Bonus
+12
+0.0
+1
+
+TEXTBOX
+1208
+13
+1358
+31
+Testing
+12
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
