@@ -1,3 +1,24 @@
+breed [suricates suricate]
+breed [serpents serpent]
+;; créer d'autres breed pour les prédateurs
+
+suricates-own
+[
+  queen? ; booléen : suricate alpha (reine)
+  king? ; booléen : suricate alpha (roi)
+  adult? ; booléen : suricate adulte => promener, défense, sentinel
+  sentinel? ; booléen : suricate sentinel => détection & alarme
+  audace ; float : réaction face à un prédateur, si valeur élevée alors plus courageux (randomized) (couplée au slider 'courage')
+  acuité ; float : capacité de détection (randomized) (couplée au slider 'perception')
+]
+
+;; sûrement mieux de faire des sliders pour danger et spook..
+serpents-own
+[
+  danger-level ; float : niveau de danger représenté
+  spook-amount ; float : nombre de suricates nécessaire pour l'effrayer
+]
+
 patches-own [
   nest?                ;; true on nest patches, false elsewhere
   nest-scent           ;; number that is higher closer to the nest
@@ -183,6 +204,36 @@ NIL
 NIL
 NIL
 1
+
+SLIDER
+0
+213
+172
+246
+courage
+courage
+0
+10
+0.0
+0.5
+1
+NIL
+HORIZONTAL
+
+SLIDER
+176
+213
+348
+246
+perception
+perception
+0
+10
+0.0
+0.5
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
