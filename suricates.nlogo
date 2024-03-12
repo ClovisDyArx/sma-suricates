@@ -48,7 +48,7 @@ to setup
   __clear-all-and-reset-ticks
   setup-patches
   create-suricates population
-   [
+  [
     set shape "dog"
     set size 2.5
     move-to one-of patches with [nest?]
@@ -60,7 +60,12 @@ to setup
     set alerted? false
     set audace courage * random-float 1
     set acuité perception * random-float 5
-   ]
+  ]
+  ask n-of 3 suricates; juste pour tester
+  [ ; juste pour tester
+    set sentinel? true ; juste pour tester
+    set color white ; juste pour tester
+  ] ; juste pour tester
   setup-alphas
 end
 
@@ -108,13 +113,14 @@ to go ; TODO
   ask suricates
   [
     wiggle
+    check-surrounding
     if go-to-nest ; juste pour tester
     [return-to-nest] ; juste pour tester
-    if ticks mod 3 = 0
-    [
-      create-wave ; juste pour tester
-    ]
-    move-wave ; juste pour tester
+    ;if ticks mod 3 = 0
+    ;[
+    ;  create-wave ; juste pour tester
+    ;]
+    ;move-wave ; juste pour tester
   ]
   tick
 end
@@ -127,27 +133,43 @@ to wiggle
 end
 
 to create-wave
-  ask one-of suricates
+  let acuity acuité
+  hatch-waves 1
   [
-    let acuity acuité
-    hatch-waves 1
-    [
-      set shape "wave"
-      set color red
-      set size 1
-      set duration acuity
-    ]
+    set shape "wave"
+    set color red
+    set size 1
+    set duration acuity
   ]
+  move-wave
 end
 
 to move-wave
   ask waves [
     ifelse duration > 0
     [
-      set size size + 0.5
-      set duration duration - 0.5
+      set size size + 5
+      set duration duration - 2.5
     ]
     [ die ]
+  ]
+end
+
+to check-surrounding
+  ask suricates with [sentinel?]
+  [
+    let nearby-predators predators in-radius acuité
+    if count nearby-predators > 0
+    [
+      create-wave
+      set alerted? true
+    ]
+    let nearby-sentinels suricates with [ alerted? ] in-radius acuité
+    if count nearby-sentinels > 0
+    [
+      create-wave
+      set alerted? true
+    ]
   ]
 end
 
@@ -196,11 +218,27 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;
 
 to spawn-snake
-  ; TODO
+  create-predators 1
+  [
+    set shape "x"
+    set size 3
+    move-to one-of patches with [not nest?]
+    set color white
+    set danger-level 1
+    set spook-amount 10 * random-float 1
+  ]
 end
 
 to spawn-tiger
-  ; TODO
+  create-predators 1
+  [
+    set shape "wolf"
+    set size 3
+    move-to one-of patches with [not nest?]
+    set color white
+    set danger-level 2
+    set spook-amount 20 * random-float 1
+  ]
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -240,8 +278,8 @@ GRAPHICS-WINDOW
 50
 -50
 50
-0
-0
+1
+1
 1
 ticks
 60.0
@@ -349,7 +387,7 @@ perception
 perception
 1
 10
-10.0
+5.0
 0.5
 1
 NIL
