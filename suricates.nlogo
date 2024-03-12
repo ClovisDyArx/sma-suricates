@@ -61,7 +61,7 @@ to setup
     set audace courage * random-float 1
     set acuité perception * random-float 5
   ]
-  ask n-of 3 suricates; juste pour tester
+  ask n-of 5 suricates with [not king? and not queen?]; juste pour tester
   [ ; juste pour tester
     set sentinel? true ; juste pour tester
     set color white ; juste pour tester
