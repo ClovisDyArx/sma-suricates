@@ -8,6 +8,7 @@
 
 breed [suricates suricate]
 breed [predators predator]
+breed [waves wave] ; uniquement pour le visuel
 
 suricates-own
 [
@@ -17,6 +18,7 @@ suricates-own
   sentinel? ; booléen : suricate sentinel => détection & alarme
   audace ; float : réaction face à un prédateur, si valeur élevée alors plus courageux (randomized) (couplée au slider 'courage')
   acuité ; float : capacité de détection (randomized) (couplée au slider 'perception')
+  alerted? ; booléen : suricate alarmé par la présence d'un prédateur
 ]
 
 ;; sûrement mieux de faire des sliders pour danger et spook..
@@ -30,6 +32,9 @@ patches-own [
   nest?                ;; true on nest patches, false elsewhere
   nest-scent           ;; number that is higher closer to the nest
 ]
+
+waves-own [ duration ] ; taille et temps de propagation de l'onde
+
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ; ┌────────────┐
@@ -52,8 +57,9 @@ to setup
     set king? false
     set adult? true
     set sentinel? false
+    set alerted? false
     set audace courage * random-float 1
-    set acuité perception * random-float 1
+    set acuité perception * random-float 5
    ]
   setup-alphas
 end
@@ -103,15 +109,46 @@ to go ; TODO
   [
     wiggle
     if go-to-nest ; juste pour tester
-    [return-to-nest]
+    [return-to-nest] ; juste pour tester
+    if ticks mod 3 = 0
+    [
+      create-wave ; juste pour tester
+    ]
+    move-wave ; juste pour tester
   ]
+  tick
 end
 
 to wiggle
   rt random 40
   lt random 40
-  fd 1
+  fd 0.5
   if not can-move? 1 [ rt 180 ]
+end
+
+to create-wave
+  ask one-of suricates
+  [
+    let acuity acuité
+    hatch-waves 1
+    [
+      set shape "wave"
+      set color red
+      set size 1
+      set duration acuity
+    ]
+  ]
+end
+
+to move-wave
+  ask waves [
+    ifelse duration > 0
+    [
+      set size size + 0.5
+      set duration duration - 0.5
+    ]
+    [ die ]
+  ]
 end
 
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -312,7 +349,7 @@ perception
 perception
 1
 10
-1.0
+10.0
 0.5
 1
 NIL
@@ -768,6 +805,11 @@ Polygon -10899396 true false 105 90 75 75 55 75 40 89 31 108 39 124 60 105 75 10
 Polygon -10899396 true false 132 85 134 64 107 51 108 17 150 2 192 18 192 52 169 65 172 87
 Polygon -10899396 true false 85 204 60 233 54 254 72 266 85 252 107 210
 Polygon -7500403 true true 119 75 179 75 209 101 224 135 220 225 175 261 128 261 81 224 74 135 88 99
+
+wave
+false
+0
+Circle -2674135 false false 44 44 212
 
 wheel
 false
