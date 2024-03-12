@@ -113,14 +113,10 @@ to go ; TODO
   ask suricates
   [
     wiggle
+    alphas-order
     check-surrounding
-    if go-to-nest ; juste pour tester
-    [return-to-nest] ; juste pour tester
-    ;if ticks mod 3 = 0
-    ;[
-    ;  create-wave ; juste pour tester
-    ;]
-    ;move-wave ; juste pour tester
+    if not sentinel?
+    [ return-to-nest ] ; juste pour tester
   ]
   tick
 end
@@ -156,7 +152,7 @@ to move-wave
 end
 
 to check-surrounding
-  ask suricates with [sentinel?]
+  ask suricates with [sentinel? or king? or queen?]
   [
     let nearby-predators predators in-radius acuité
     if count nearby-predators > 0
@@ -173,6 +169,17 @@ to check-surrounding
   ]
 end
 
+to alphas-order
+  ask suricates with [king? or queen?]
+  [
+    if alerted?
+    [ ask suricates [ return-to-nest ] ]
+  ]
+end
+
+
+;;TODO: ajouter un moyen de savoir si tout le monde est au nid.
+;;TODO: ajouter un moyen de savoir où se trouve le dernier prédateur rencontré.
 ;;;;;;;;;;;;;;;;;;;;;;
 ; ┌──────────┐
 ; │          │
@@ -413,17 +420,6 @@ Emplacement Terrier
 0.0
 1
 
-SWITCH
-1205
-36
-1328
-69
-go-to-nest
-go-to-nest
-1
-1
--1000
-
 BUTTON
 0
 82
@@ -498,16 +494,6 @@ TEXTBOX
 39
 534
 Bonus
-12
-0.0
-1
-
-TEXTBOX
-1208
-13
-1358
-31
-Testing
 12
 0.0
 1
