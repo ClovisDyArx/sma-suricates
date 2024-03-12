@@ -59,7 +59,7 @@ to setup
     set sentinel? false
     set alerted? false
     set audace courage * random-float 1
-    set acuité perception * random-float 5
+    set acuité perception * 2; * random-float 5
   ]
   ask n-of 5 suricates with [not king? and not queen?]; juste pour tester
   [ ; juste pour tester
@@ -315,7 +315,7 @@ nest-x-coord
 nest-x-coord
 -45
 45
--45.0
+0.0
 1
 1
 NIL
@@ -330,7 +330,7 @@ nest-y-coord
 nest-y-coord
 -45
 45
--45.0
+0.0
 1
 1
 NIL
@@ -379,7 +379,7 @@ courage
 courage
 1
 10
-1.0
+10.0
 0.5
 1
 NIL
@@ -394,7 +394,7 @@ perception
 perception
 1
 10
-5.0
+10.0
 0.5
 1
 NIL
