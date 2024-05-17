@@ -19,6 +19,10 @@ suricates-own
   audace ; float : réaction face à un prédateur, si valeur élevée alors plus courageux (randomized) (couplée au slider 'courage')
   acuité ; float : capacité de détection (randomized) (couplée au slider 'perception')
   alerted? ; booléen : suricate alarmé par la présence d'un prédateur
+
+  nourished? ; int: leur niveau de nourriture consommée
+  sentinel_time?
+  has-been?
 ]
 
 ;; sûrement mieux de faire des sliders pour danger et spook..
@@ -26,6 +30,7 @@ predators-own
 [
   danger-level ; float : niveau de danger représenté
   spook-amount ; float : nombre de suricates nécessaire pour l'effrayer
+  predator-type ; string : type du prédateur (terrestre ou aérien)
 ]
 
 patches-own [
@@ -33,7 +38,11 @@ patches-own [
   nest-scent           ;; number that is higher closer to the nest
 ]
 
-waves-own [ duration ] ; taille et temps de propagation de l'onde
+waves-own [
+  duration ; taille et temps de propagation de l'onde
+  danger-level? ; int : urgence du danger (1: prédateur assez proche, danger, 2: predateur très proche, urgent)
+  predator?
+]
 
 
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -60,12 +69,11 @@ to setup
     set alerted? false
     set audace courage * random-float 1
     set acuité perception * 2; * random-float 5
+    set nourished? 0
+    set sentinel_time? 0
+    set has-been? 0
+
   ]
-  ask n-of 5 suricates with [not king? and not queen?]; juste pour tester
-  [ ; juste pour tester
-    set sentinel? true ; juste pour tester
-    set color white ; juste pour tester
-  ] ; juste pour tester
   setup-alphas
 end
 
@@ -81,6 +89,32 @@ to setup-nest
   set nest? (distancexy nest-x-coord nest-y-coord) < 5
   ;; spread a nest-scent over the whole world -- stronger near the nest
   set nest-scent 200 - distancexy nest-x-coord nest-y-coord
+end
+
+to setup-sentinelle
+  end-sentinelle
+  if has-been? = 0 and (not any? suricates with [sentinel?])
+  [
+    set sentinel? true
+    set color white
+  ]
+end
+
+to end-sentinelle
+  ask suricates with [ sentinel? ]
+  [
+    if sentinel_time? > 6
+    [
+      set sentinel? false
+      set has-been? 100
+      ifelse queen?  [ set color orange ]
+      [
+        ifelse king? [set color yellow ]
+        [set color brown]
+      ]
+      set sentinel_time? 0
+    ]
+  ]
 end
 
 to recolor-patch
@@ -112,11 +146,11 @@ end
 to go ; TODO
   ask suricates
   [
-    wiggle
-    alphas-order
-    check-surrounding
-    if not sentinel?
-    [ return-to-nest ] ; juste pour tester
+    if not sentinel? or alerted? [ wiggle ]
+    if sentinel? [ check-surrounding ]
+    eat
+    alerted
+    be-sentinel
   ]
   tick
 end
@@ -126,9 +160,27 @@ to wiggle
   lt random 40
   fd 0.5
   if not can-move? 1 [ rt 180 ]
+  if has-been? > 0 [ set has-been? (has-been? - 1) ]
 end
 
-to create-wave
+to eat
+  if nourished? > 2 [set nourished? (nourished? - 2)]
+  if (random 100) < proba-nourriture
+  [
+    set nourished? (nourished? + (random 10) )
+  ]
+end
+
+to be-sentinel
+  if sentinel_time? > 50 [ end-sentinelle ]
+  if sentinel? [ set sentinel_time? (sentinel_time? + 1) ]
+  if not sentinel? and nourished? > 100 and (random 100 < 20) and not alerted?
+  [
+    setup-sentinelle
+  ]
+end
+
+to create-wave [pred]
   let acuity acuité
   hatch-waves 1
   [
@@ -136,8 +188,22 @@ to create-wave
     set color red
     set size 1
     set duration acuity
+
+    let dist [distancexy nest-x-coord nest-y-coord] of pred
+    let dist-value first dist
+    set danger-level? get-level-danger (first [predator-type] of pred) dist-value
+
+    set predator? pred
   ]
   move-wave
+end
+
+to-report get-level-danger [type-p dist]
+  ifelse type-p = "snake" [ report 2]
+  [
+    ifelse dist < 20 [ report 2 ]
+    [ report 1 ]
+  ]
 end
 
 to move-wave
@@ -152,28 +218,35 @@ to move-wave
 end
 
 to check-surrounding
-  ask suricates with [sentinel? or king? or queen?]
+  ask suricates with [sentinel?]
   [
     let nearby-predators predators in-radius acuité
     if count nearby-predators > 0
     [
-      create-wave
-      set alerted? true
-    ]
-    let nearby-sentinels suricates with [ alerted? ] in-radius acuité
-    if count nearby-sentinels > 0
-    [
-      create-wave
+      foreach (list nearby-predators) [
+        t ->
+        create-wave t
+      ]
+
       set alerted? true
     ]
   ]
 end
 
-to alphas-order
-  ask suricates with [king? or queen?]
+to alerted
+  let w waves
+  if count w > 0 [set alerted? true]
+
+  if alerted? and (not ([nest?] of patch-here))
   [
-    if alerted?
-    [ ask suricates [ return-to-nest ] ]
+    foreach (list w) [
+        t ->
+        let predator-t [predator?] of t
+        let predator-value first predator-t
+
+        create-wave predator-value
+      ]
+    return-to-nest
   ]
 end
 
@@ -233,6 +306,7 @@ to spawn-snake
     set color white
     set danger-level 1
     set spook-amount 10 * random-float 1
+    set predator-type "snake"
   ]
 end
 
@@ -245,6 +319,7 @@ to spawn-tiger
     set color white
     set danger-level 2
     set spook-amount 20 * random-float 1
+    set predator-type "terrestre"
   ]
 end
 
@@ -393,8 +468,8 @@ SLIDER
 perception
 perception
 1
-10
-10.0
+45
+37.5
 0.5
 1
 NIL
@@ -497,6 +572,21 @@ Bonus
 12
 0.0
 1
+
+SLIDER
+219
+180
+391
+213
+proba-nourriture
+proba-nourriture
+0
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
