@@ -152,6 +152,8 @@ to go ; TODO
     alerted
     be-sentinel
   ]
+  queen-behavior
+  king-behavior
   tick
 end
 
@@ -247,6 +249,82 @@ to alerted
         create-wave predator-value
       ]
     return-to-nest
+  ]
+end
+
+
+;;;; Règles de la hierarchie
+;;; Pour la queen
+to queen-behavior
+  ask suricates with [queen?] [
+    ifelse alerted? [
+      lead-return-to-nest
+    ]
+    [
+      oversee-colony
+    ]
+  ]
+end
+
+to lead-return-to-nest
+  ;; Reine dirige la colny vers le nest
+  ask suricates with [not nest?] [
+    move-towards-queen
+  ]
+end
+
+to move-towards-queen
+  let queen one-of suricates with [queen?]
+  face queen
+  fd 1
+end
+
+to oversee-colony
+  if not any? suricates with [sentinel?] [
+    assign-new-sentinel
+  ]
+end
+
+to assign-new-sentinel
+  let candidate one-of suricates with [adult? and not sentinel? and nourished? > 50]
+  if candidate != nobody [
+    ask candidate [
+      set sentinel? true
+      set color white
+    ]
+  ]
+end
+
+;;; Pour le king
+to king-behavior
+  ask suricates with [king?] [
+    ifelse alerted? [
+      help-defense-colony
+    ]
+    [
+      oversee-sentinels
+    ]
+  ]
+end
+
+to help-defense-colony
+  let nearby-predators predators in-radius 5
+  ifelse any? nearby-predators [
+    charge-towards-predator (one-of nearby-predators)
+  ]
+  [
+    return-to-nest
+  ]
+end
+
+to charge-towards-predator [predator_selected]
+  face predator_selected
+  fd 1
+end
+
+to oversee-sentinels
+  if not any? suricates with [sentinel? and not alerted?] [
+    assign-new-sentinel
   ]
 end
 
