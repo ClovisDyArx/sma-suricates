@@ -24,6 +24,8 @@ suricates-own
   nourished? ; int: leur niveau de nourriture consommée
   sentinel_time?
   has-been?
+  is-reproducing? ; booléen: pour simiulé la reproduction pour les suricates non alpha
+  female?
 ]
 
 ;; sûrement mieux de faire des sliders pour danger et spook..
@@ -75,7 +77,8 @@ to setup
     set sentinel_time? 0
     set has-been? 0
     set reproduction-wait-tick? 10 ; int: nombre de ticks avant que le suricate puisse se reproduire à nouveau
-
+    set is-reproducing? false
+    set female? (random-float 1.0 < 0.5)
   ]
   setup-alphas
 end
@@ -126,13 +129,13 @@ to recolor-patch
 end
 
 to setup-alphas
-  ask one-of suricates
+  ask one-of suricates with [female?]
   [
     set queen? true
     set color orange
     set audace courage
   ]
-  ask one-of suricates with [not queen?]
+  ask one-of suricates with [not queen? and not female?]
   [
     set king? true
     set color yellow
@@ -156,6 +159,12 @@ to go ; TODO
     eat
     alerted
     be-sentinel
+    ; random reproduction between 2 surricates not queen and king
+    if not king? and not queen? and female? and not sentinel? and not alerted? and nourished? > 50 and any? suricates with [not female? and not king? and not queen?] in-radius 2 [
+      if random-float 1.0 < 0.8 [
+        set is-reproducing? true
+      ]
+    ]
   ]
   queen-behavior
   king-behavior
@@ -266,6 +275,13 @@ to queen-behavior
     if reproduction-wait-tick? <= 0 and nourished? > 50 and any? suricates with [king?] in-radius 2 [
       reproduce
     ]
+    let suricate-to-kill suricates with [is-reproducing?] in-radius 2
+    if suricate-to-kill != nobody [
+      ask suricate-to-kill [
+        die
+      ]
+    ]
+
   ]
 end
 
