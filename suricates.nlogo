@@ -19,6 +19,7 @@ suricates-own
   audace ; float : réaction face à un prédateur, si valeur élevée alors plus courageux (randomized) (couplée au slider 'courage')
   acuité ; float : capacité de détection (randomized) (couplée au slider 'perception')
   alerted? ; booléen : suricate alarmé par la présence d'un prédateur
+  reproduction-wait-tick? ; int: nombre de ticks avant que le suricate puisse se reproduire à nouveau
 
   nourished? ; int: leur niveau de nourriture consommée
   sentinel_time?
@@ -73,7 +74,7 @@ to setup
     set nourished? 0
     set sentinel_time? 0
     set has-been? 0
-    set reproduction-wait-tick ; int: nombre de ticks avant que le suricate puisse se reproduire à nouveau
+    set reproduction-wait-tick? 10 ; int: nombre de ticks avant que le suricate puisse se reproduire à nouveau
 
   ]
   setup-alphas
@@ -129,11 +130,13 @@ to setup-alphas
   [
     set queen? true
     set color orange
+    set audace courage
   ]
   ask one-of suricates with [not queen?]
   [
     set king? true
     set color yellow
+    set audace courage
   ]
 end
 
@@ -260,43 +263,8 @@ end
 ;;; Pour la queen
 to queen-behavior
   ask suricates with [queen?] [
-    ifelse alerted? [
-      lead-return-to-nest
-    ]
-    [
-      oversee-colony
-      if reproduction-wait-tick <= 0 and nourished? > 50 and any? suricates with [king?] in-radius 2 [
-        reproduce
-      ]
-    ]
-  ]
-end
-
-to lead-return-to-nest
-  ;; Reine dirige la colny vers le nest
-  ask suricates with [not nest?] [
-    move-towards-queen
-  ]
-end
-
-to move-towards-queen
-  let queen one-of suricates with [queen?]
-  face queen
-  fd 1
-end
-
-to oversee-colony
-  if not any? suricates with [sentinel?] [
-    assign-new-sentinel
-  ]
-end
-
-to assign-new-sentinel
-  let candidate one-of suricates with [adult? and not sentinel? and nourished? > 50]
-  if candidate != nobody [
-    ask candidate [
-      set sentinel? true
-      set color white
+    if reproduction-wait-tick? <= 0 and nourished? > 50 and any? suricates with [king?] in-radius 2 [
+      reproduce
     ]
   ]
 end
@@ -304,38 +272,12 @@ end
 ;;; Pour le king
 to king-behavior
   ask suricates with [king?] [
-    ifelse alerted? [
-      help-defense-colony
-    ]
-    [
-      oversee-sentinels
-      if reproduction-wait-tick <= 0 and nourished? > 50 and any? suricates with [queen?] in-radius 2 [
+      if reproduction-wait-tick? <= 0 and nourished? > 50 and any? suricates with [queen?] in-radius 2 [
         reproduce
      ]
-    ]
   ]
 end
 
-to help-defense-colony
-  let nearby-predators predators in-radius 5
-  ifelse any? nearby-predators [
-    charge-towards-predator (one-of nearby-predators)
-  ]
-  [
-    return-to-nest
-  ]
-end
-
-to charge-towards-predator [predator_selected]
-  face predator_selected
-  fd 1
-end
-
-to oversee-sentinels
-  if not any? suricates with [sentinel? and not alerted?] [
-    assign-new-sentinel
-  ]
-end
 to reproduce
   hatch 1 [
     set shape "dog"
@@ -351,9 +293,9 @@ to reproduce
     set nourished? 0
     set sentinel_time? 0
     set has-been? 0
-    set reproduction-wait-tick 100
+    set reproduction-wait-tick? 100
   ]
-  set reproduction-wait-tick 200
+  set reproduction-wait-tick? 200
 end
 ; Pour les prédateurs
 
