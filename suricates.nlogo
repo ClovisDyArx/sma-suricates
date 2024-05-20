@@ -27,6 +27,7 @@ suricates-own
   is-reproducing? ; booléen: pour simiulé la reproduction pour les suricates non alpha
   female?
   age? ; int: age du surricate pour qui augmente a chaque tick jusqu'a adulte
+  babysitter? ; bool: reste dans le nid pour s'occuper des enfants
 ]
 
 ;; sûrement mieux de faire des sliders pour danger et spook..
@@ -80,6 +81,7 @@ to setup
     set reproduction-wait-tick? 10 ; int: nombre de ticks avant que le suricate puisse se reproduire à nouveau
     set is-reproducing? false
     set female? (random-float 1.0 < 0.5)
+    set babysitter? false
   ]
   setup-alphas
 end
@@ -155,7 +157,7 @@ end
 to go ; TODO
   ask suricates
   [
-    if not sentinel? or alerted? [ wiggle ]
+    if not sentinel? or alerted? and adult? and not babysitter? [ wiggle ]
     if sentinel? [ check-surrounding ]
     eat
     alerted
@@ -173,11 +175,29 @@ to go ; TODO
         set size 2.5
       ]
     ]
+    if babysitter? [
+      if not nest? [
+        move-to one-of patches with [nest?]
+      ]
+    ]
   ]
   queen-behavior
   king-behavior
   predator-behavior
+  if any? suricates with [not adult?] and not any? suricates with [babysitter?] [
+    assign-babysitter
+  ]
   tick
+end
+
+to assign-babysitter
+  let candidate one-of suricates with [adult? and not sentinel? and not king? and not queen?]
+  if candidate != nobody [
+    ask candidate [
+      set babysitter? true
+      set color blue
+    ]
+  ]
 end
 
 to wiggle
