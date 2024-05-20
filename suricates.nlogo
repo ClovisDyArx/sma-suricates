@@ -73,6 +73,7 @@ to setup
     set nourished? 0
     set sentinel_time? 0
     set has-been? 0
+    set reproduction-wait-tick ; int: nombre de ticks avant que le suricate puisse se reproduire à nouveau
 
   ]
   setup-alphas
@@ -264,6 +265,9 @@ to queen-behavior
     ]
     [
       oversee-colony
+      if reproduction-wait-tick <= 0 and nourished? > 50 and any? suricates with [king?] in-radius 2 [
+        reproduce
+      ]
     ]
   ]
 end
@@ -305,6 +309,9 @@ to king-behavior
     ]
     [
       oversee-sentinels
+      if reproduction-wait-tick <= 0 and nourished? > 50 and any? suricates with [queen?] in-radius 2 [
+        reproduce
+     ]
     ]
   ]
 end
@@ -329,7 +336,25 @@ to oversee-sentinels
     assign-new-sentinel
   ]
 end
-
+to reproduce
+  hatch 1 [
+    set shape "dog"
+    set size 1.5
+    set color brown
+    set queen? false
+    set king? false
+    set adult? false
+    set sentinel? false
+    set alerted? false
+    set audace courage * random-float 1
+    set acuité perception * 2; * random-float
+    set nourished? 0
+    set sentinel_time? 0
+    set has-been? 0
+    set reproduction-wait-tick 100
+  ]
+  set reproduction-wait-tick 200
+end
 ; Pour les prédateurs
 
 to predator-behavior
