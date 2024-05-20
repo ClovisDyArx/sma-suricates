@@ -28,9 +28,10 @@ suricates-own
 ;; sûrement mieux de faire des sliders pour danger et spook..
 predators-own
 [
+  cible ; suricate : cible actuelle
   danger-level ; float : niveau de danger représenté
   spook-amount ; float : nombre de suricates nécessaire pour l'effrayer
-  predator-type ; string : type du prédateur (terrestre ou aérien)
+  predator-type ; string : type du prédateur (serpent, rapace, chacal)
 ]
 
 patches-own [
@@ -154,6 +155,7 @@ to go ; TODO
   ]
   queen-behavior
   king-behavior
+  predator-behavior
   tick
 end
 
@@ -201,7 +203,7 @@ to create-wave [pred]
 end
 
 to-report get-level-danger [type-p dist]
-  ifelse type-p = "snake" [ report 2]
+  ifelse type-p = "serpent" [ report 2]
   [
     ifelse dist < 20 [ report 2 ]
     [ report 1 ]
@@ -328,6 +330,105 @@ to oversee-sentinels
   ]
 end
 
+; Pour les prédateurs
+
+to predator-behavior
+  let serpents predators with [predator-type = "serpent"]
+  let rapaces predators with [predator-type = "rapace"]
+  let chacals predators with [predator-type = "chacal"]
+  ask serpents
+  [
+    serpents-behavior
+  ]
+  ask rapaces
+  [
+    rapaces-behavior
+  ]
+  ask chacals
+  [
+    chacal-behavior
+  ]
+end
+
+to serpents-behavior
+  let cibles suricates in-radius 10 ; and not standing-still
+
+  ; Si suricate vu
+  (ifelse
+  cible != nobody [
+    face cible
+    rt 180
+    fd 1
+    if distance cible > 30
+    [
+      set cible nobody
+    ]
+  ]
+  any? cibles and count cibles > spook-amount + 20 [
+    set cible min-one-of cibles [distance myself]
+  ]
+  any? cibles [
+    face min-one-of cibles [distance myself]
+    fd 1
+  ]
+  ; else
+  [
+    rt 20 - random 40
+    if ycor >= max-pycor * 0.95   [set heading (random-normal 180 2)]
+    if xcor >= max-pxcor * 0.95   [set heading (random-normal 270 2)]
+    if xcor <= min-pxcor * 0.95   [set heading (random-normal 90 2)]
+    if ycor <= min-pycor * 0.95   [set heading (random-normal 0 2)]
+    fd 1
+  ])
+end
+
+to rapaces-behavior
+  let cibles suricates in-radius 20 with [not nest?] ; and not standing-still
+
+  ; Si suricate vu
+  (ifelse
+  cible != nobody [
+    face cible
+    fd 1
+    if distance cible < 1
+    [
+      set cible nobody
+    ]
+  ]
+  any? cibles and random 100 < 5 [
+    set cible min-one-of cibles [distance myself]
+  ]
+  ; else
+  [
+    rt 20 - random 40
+    if ycor >= max-pycor * 0.95   [set heading (random-normal 180 2)]
+    if xcor >= max-pxcor * 0.95   [set heading (random-normal 270 2)]
+    if xcor <= min-pxcor * 0.95   [set heading (random-normal 90 2)]
+    if ycor <= min-pycor * 0.95   [set heading (random-normal 0 2)]
+    fd 1
+  ])
+end
+
+to chacal-behavior
+  let cibles suricates in-radius 10 with [not nest?]
+
+  ; Si suricate vu
+  ifelse any? cibles
+  [
+    let target min-one-of cibles [distance myself]
+    face target
+    fd 0.6
+  ]
+  ; else
+  [
+    rt 20 - random 40
+    if ycor >= max-pycor * 0.95   [set heading (random-normal 180 2)]
+    if xcor >= max-pxcor * 0.95   [set heading (random-normal 270 2)]
+    if xcor <= min-pxcor * 0.95   [set heading (random-normal 90 2)]
+    if ycor <= min-pycor * 0.95   [set heading (random-normal 0 2)]
+    fd 0.6
+  ]
+end
 
 ;;TODO: ajouter un moyen de savoir si tout le monde est au nid.
 ;;TODO: ajouter un moyen de savoir où se trouve le dernier prédateur rencontré.
@@ -380,24 +481,40 @@ to spawn-snake
   [
     set shape "x"
     set size 3
+    set cible nobody
     move-to one-of patches with [not nest?]
     set color white
     set danger-level 1
     set spook-amount 10 * random-float 1
-    set predator-type "snake"
+    set predator-type "serpent"
   ]
 end
 
-to spawn-tiger
+to spawn-rapace
+  create-predators 1
+  [
+    set shape "airplane"
+    set size 3
+    set cible nobody
+    move-to one-of patches with [not nest?]
+    set color white
+    set danger-level 1
+    set spook-amount 15 * random-float 1
+    set predator-type "rapace"
+  ]
+end
+
+to spawn-chacal
   create-predators 1
   [
     set shape "wolf"
     set size 3
+    set cible nobody
     move-to one-of patches with [not nest?]
     set color white
     set danger-level 2
     set spook-amount 20 * random-float 1
-    set predator-type "terrestre"
+    set predator-type "chacal"
   ]
 end
 
@@ -453,7 +570,7 @@ population
 population
 0
 30
-10.0
+30.0
 1
 1
 NIL
@@ -547,7 +664,7 @@ perception
 perception
 1
 45
-37.5
+37.0
 0.5
 1
 NIL
@@ -596,7 +713,7 @@ BUTTON
 228
 115
 spawn-tiger
-spawn-tiger
+spawn-chacal
 NIL
 1
 T
@@ -660,11 +777,28 @@ proba-nourriture
 proba-nourriture
 0
 100
-50.0
+66.0
 1
 1
 NIL
 HORIZONTAL
+
+BUTTON
+231
+83
+337
+116
+NIL
+spawn-rapace
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
