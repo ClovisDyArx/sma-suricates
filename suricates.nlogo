@@ -28,6 +28,8 @@ suricates-own
   female?
   age? ; int: age du surricate pour qui augmente a chaque tick jusqu'a adulte
   babysitter? ; bool: reste dans le nid pour s'occuper des enfants
+
+  hide? ;float [0,1] : à quel point le suricate est camouflé
 ]
 
 ;; sûrement mieux de faire des sliders pour danger et spook..
@@ -82,6 +84,7 @@ to setup
     set is-reproducing? false
     set female? (random-float 1.0 < 0.5)
     set babysitter? false
+    set hide? 0
   ]
   setup-alphas
 end
@@ -157,7 +160,7 @@ end
 to go ; TODO
   ask suricates
   [
-    if not sentinel? or alerted? and adult? and not babysitter? [ wiggle ]
+    if not sentinel? or alerted? and adult? and not babysitter? and hide? = 0 [ wiggle ]
     if sentinel? [ check-surrounding ]
     eat
     alerted
@@ -243,12 +246,12 @@ to create-wave [pred]
   move-wave
 end
 
+;niveau de danger :
+;3 : chacals -> fuite
+;TODO : faire des choix pour les autres priorités
 to-report get-level-danger [type-p dist]
-  ifelse type-p = "serpent" [ report 2]
-  [
-    ifelse dist < 20 [ report 2 ]
-    [ report 1 ]
-  ]
+  ifelse dist < 20 [ report 2 ]
+  [ report 1 ]
 end
 
 to move-wave
@@ -291,7 +294,9 @@ to alerted
 
         create-wave predator-value
       ]
-    return-to-nest
+    ifelse adult? and not babysitter?
+    [act_against_predators]
+    [return-to-nest]
   ]
 end
 
@@ -339,6 +344,7 @@ to reproduce
     set has-been? 0
     set reproduction-wait-tick? 100
     set age? 0
+    set hide? 0
     move-to one-of patches with [nest?]
   ]
   set reproduction-wait-tick? 200
@@ -443,6 +449,38 @@ to chacal-behavior
   ]
 end
 
+;réactions face aux prédateurs
+to act_against_predators
+  let lvl -1
+  let priority_wave nobody
+  ask waves [
+    let tmp max [danger-level] of predator?
+    if tmp > lvl [
+      set lvl tmp
+      set priority_wave self
+    ]
+  ]
+
+  ;let priority_wave max-one-of waves [[danger-level] of one-of predator?]
+  ;let priority_wave one-of waves
+  ;let lvl [danger-level] of [one-of predator?] of priority_wave
+  ifelse lvl > 2 ;chacal : danger immédiat
+  [
+    return-to-nest
+  ]
+  [
+    ifelse lvl = 1 ;serpent uniquement, proche
+    [
+      let serpent one-of [predator?] of priority_wave
+      face serpent
+      fd 1
+    ]
+    [
+      set hide? random-float 1
+    ]
+  ]
+end
+
 ;;TODO: ajouter un moyen de savoir si tout le monde est au nid.
 ;;TODO: ajouter un moyen de savoir où se trouve le dernier prédateur rencontré.
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -511,7 +549,7 @@ to spawn-rapace
     set cible nobody
     move-to one-of patches with [not nest?]
     set color white
-    set danger-level 1
+    set danger-level 2
     set spook-amount 15 * random-float 1
     set predator-type "rapace"
   ]
@@ -525,7 +563,7 @@ to spawn-chacal
     set cible nobody
     move-to one-of patches with [not nest?]
     set color white
-    set danger-level 2
+    set danger-level 3
     set spook-amount 20 * random-float 1
     set predator-type "chacal"
   ]
@@ -677,7 +715,7 @@ perception
 perception
 1
 45
-37.0
+12.0
 0.5
 1
 NIL
