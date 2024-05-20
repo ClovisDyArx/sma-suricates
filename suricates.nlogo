@@ -26,6 +26,7 @@ suricates-own
   has-been?
   is-reproducing? ; booléen: pour simiulé la reproduction pour les suricates non alpha
   female?
+  age? ; int: age du surricate pour qui augmente a chaque tick jusqu'a adulte
 ]
 
 ;; sûrement mieux de faire des sliders pour danger et spook..
@@ -163,6 +164,13 @@ to go ; TODO
     if not king? and not queen? and female? and not sentinel? and not alerted? and nourished? > 50 and any? suricates with [not female? and not king? and not queen?] in-radius 2 [
       if random-float 1.0 < 0.8 [
         set is-reproducing? true
+      ]
+    ]
+    if not adult? [
+      set age? age? + 1
+      if age? > 21 [
+        set adult? true
+        set size 2.5
       ]
     ]
   ]
@@ -310,6 +318,7 @@ to reproduce
     set sentinel_time? 0
     set has-been? 0
     set reproduction-wait-tick? 100
+    set age? 0
   ]
   set reproduction-wait-tick? 200
 end
