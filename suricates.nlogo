@@ -339,6 +339,7 @@ to reproduce
     set has-been? 0
     set reproduction-wait-tick? 100
     set age? 0
+    move-to one-of patches with [nest?]
   ]
   set reproduction-wait-tick? 200
 end
