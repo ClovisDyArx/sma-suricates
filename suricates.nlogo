@@ -293,7 +293,7 @@ to alerted
   let w waves
   if count w > 0 [set alerted? true]
 
-  if alerted? and (not ([nest?] of patch-here))
+  if hide? = 0 and alerted? and (not ([nest?] of patch-here))
   [
     foreach (list w) [
         t ->
