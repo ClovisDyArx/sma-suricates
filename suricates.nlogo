@@ -229,27 +229,37 @@ to be-sentinel
 end
 
 to create-wave [pred]
-  let acuity acuité
-  hatch-waves 1
-  [
-    set shape "wave"
-    set color red
-    set size 1
-    set duration acuity
+  let dist [distancexy nest-x-coord nest-y-coord] of pred
+  let dist-value first dist
 
-    let dist [distancexy nest-x-coord nest-y-coord] of pred
-    let dist-value first dist
-    set danger-level? get-level-danger (first [predator-type] of pred) dist-value
-
-    set predator? pred
+  let threat first [predator-type] of pred
+  let close-snake? any? waves with [
+    get-level-danger [predator-type] of predator? dist = 2
   ]
-  move-wave
+  if threat = "chacal" or (not any? waves with [[predator-type] of predator? = "chacal"] and (threat = "serpent" or (threat = "rapace" and not close-snake?)))
+  [
+    let acuity acuité
+    hatch-waves 1
+    [
+      set shape "wave"
+      set color red
+      set size 1
+      set duration acuity
+
+      set danger-level? get-level-danger (first [predator-type] of pred) dist-value
+
+      set predator? pred
+    ]
+    move-wave
+  ]
 end
 
 ;niveau de danger :
 to-report get-level-danger [type-p dist]
-  ifelse dist < 20 [ report 2 ]
-  [ report 1 ]
+  ifelse type-p = "serpent" [
+    ifelse dist < 20 [ report 2 ][ report 1]
+  ]
+  [ report 0 ]
 end
 
 to move-wave
@@ -449,30 +459,19 @@ end
 
 ;réactions face aux prédateurs
 to act_against_predators
-  let lvl -1
-  let priority_wave nobody
-  ask waves [
-    let tmp max [danger-level] of predator?
-    if tmp > lvl [
-      set lvl tmp
-      set priority_wave self
-    ]
-  ]
-
-  ;let priority_wave max-one-of waves [[danger-level] of one-of predator?]
-  ;let priority_wave one-of waves
-  ;let lvl [danger-level] of [one-of predator?] of priority_wave
+  let priority_wave max-one-of waves [[danger-level] of one-of predator?]
+  let lvl [danger-level] of [one-of predator?] of priority_wave
   ifelse lvl > 2 ;chacal : danger immédiat
   [
     return-to-nest
   ]
   [
-    ifelse lvl = 1 ;serpent uniquement, proche
+    ifelse lvl = 1;serpent uniquement, proche
     [
-      let serpent one-of [predator?] of priority_wave
+      let serpent [predator?] of priority_wave
       if audace > 5
       [
-        face serpent
+        face one-of serpent
         fd 1
       ]
     ]
