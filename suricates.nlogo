@@ -234,7 +234,7 @@ to create-wave [pred]
 
   let threat first [predator-type] of pred
   let close-snake? any? waves with [
-    get-level-danger [predator-type] of predator? dist = 2
+    get-level-danger [predator-type] of predator? dist = 1
   ]
   if threat = "chacal" or (not any? waves with [[predator-type] of predator? = "chacal"] and (threat = "serpent" or (threat = "rapace" and not close-snake?)))
   [
@@ -257,7 +257,7 @@ end
 ;niveau de danger :
 to-report get-level-danger [type-p dist]
   ifelse type-p = "serpent" [
-    ifelse dist < 20 [ report 2 ][ report 1]
+    ifelse dist < 20 [ report 1 ][ report 2]
   ]
   [ report 0 ]
 end
