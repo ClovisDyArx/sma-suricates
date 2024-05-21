@@ -247,8 +247,6 @@ to create-wave [pred]
 end
 
 ;niveau de danger :
-;3 : chacals -> fuite
-;TODO : faire des choix pour les autres priorités
 to-report get-level-danger [type-p dist]
   ifelse dist < 20 [ report 2 ]
   [ report 1 ]
@@ -472,11 +470,20 @@ to act_against_predators
     ifelse lvl = 1 ;serpent uniquement, proche
     [
       let serpent one-of [predator?] of priority_wave
-      face serpent
-      fd 1
+      if audace > 5
+      [
+        face serpent
+        fd 1
+      ]
     ]
     [
-      set hide? random-float 1
+      ifelse distancexy nest-x-coord nest-y-coord < 20
+      [
+        return-to-nest
+      ]
+      [
+        set hide? random-float 1
+      ]
     ]
   ]
 end
