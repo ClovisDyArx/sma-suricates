@@ -110,7 +110,7 @@ to setup-sentinelle
   if has-been? = 0 and (not any? suricates with [sentinel?])
   [
     set sentinel? true
-    set color white
+    set color blue
   ]
 end
 
@@ -224,7 +224,7 @@ end
 to be-sentinel
   if sentinel_time? > 50 [ end-sentinelle ]
   if sentinel? [ set sentinel_time? (sentinel_time? + 1) ]
-  if not sentinel? and nourished? > 100 and (random 100 < 20) and not alerted?
+  if not sentinel? and nourished? > 100 and (random 100 < 20) and not alerted? and adult?
   [
     setup-sentinelle
   ]
@@ -297,7 +297,8 @@ end
 
 to alerted
   let w waves
-  if count w > 0 [set alerted? true]
+  ifelse count w > 0 [ set alerted? true ]
+  [ set alerted? false ]
 
   if hide? = 0 and alerted? and (not ([nest?] of patch-here))
   [
@@ -367,6 +368,9 @@ to reproduce
 end
 
 to kill-waves [detected]
+  ask waves [
+    print first predator?
+  ]
   ask waves with [predator? = detected]
   [
     die
@@ -671,7 +675,7 @@ population
 population
 0
 30
-30.0
+18.0
 1
 1
 NIL
@@ -765,7 +769,7 @@ perception
 perception
 1
 45
-12.0
+29.5
 0.5
 1
 NIL
