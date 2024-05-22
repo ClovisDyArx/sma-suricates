@@ -304,10 +304,9 @@ to alerted
     foreach (list w) [
         t ->
         let predator-t [predator?] of t
-        let predator-value first predator-t
-
-        if not empty? predator-t
+      if not empty? predator-t
         [
+          let predator-value first predator-t
           create-wave predator-value
         ]
       ]
@@ -367,6 +366,13 @@ to reproduce
   set reproduction-wait-tick? 200
 end
 
+to kill-waves
+  ask waves
+  [
+    die
+  ]
+end
+
 ; Pour les prédateurs
 
 to predator-behavior
@@ -380,6 +386,7 @@ to predator-behavior
     if despawn-timer <= 0
     [
       die
+      kill-waves
     ]
   ]
   ask rapaces
@@ -388,6 +395,8 @@ to predator-behavior
     set despawn-timer despawn-timer - 1
     if despawn-timer <= 0
     [
+      kill-waves
+      print count waves
       die
     ]
   ]
@@ -398,6 +407,7 @@ to predator-behavior
     if despawn-timer <= 0
     [
       die
+      kill-waves
     ]
   ]
 end
