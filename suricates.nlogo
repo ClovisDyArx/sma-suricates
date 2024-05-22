@@ -366,8 +366,8 @@ to reproduce
   set reproduction-wait-tick? 200
 end
 
-to kill-waves
-  ask waves
+to kill-waves [detected]
+  ask waves with [predator? = detected]
   [
     die
   ]
@@ -385,7 +385,7 @@ to predator-behavior
     set despawn-timer despawn-timer - 1
     if despawn-timer <= 0
     [
-      kill-waves
+      kill-waves self
       die
     ]
   ]
@@ -395,7 +395,7 @@ to predator-behavior
     set despawn-timer despawn-timer - 1
     if despawn-timer <= 0
     [
-      kill-waves
+      kill-waves self
       die
     ]
   ]
@@ -405,7 +405,7 @@ to predator-behavior
     set despawn-timer despawn-timer - 1
     if despawn-timer <= 0
     [
-      kill-waves
+      kill-waves self
       die
     ]
   ]
@@ -600,7 +600,7 @@ to spawn-rapace
     set spook-amount 15 * random-float 1
     set predator-type "rapace"
     set despawn-timer 500;
-    set acuité 0
+    set acuité random-float 1
   ]
 end
 
