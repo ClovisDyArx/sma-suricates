@@ -38,7 +38,9 @@ predators-own
   cible ; suricate : cible actuelle
   danger-level ; float : niveau de danger représenté
   spook-amount ; float : nombre de suricates nécessaire pour l'effrayer
+  acuité ; float [0, 1] : perception du prédateur pour trouver les suricates camouflés
   predator-type ; string : type du prédateur (serpent, rapace, chacal)
+  despawn-timer ; int: temps avant le despawn du prédateur
 ]
 
 patches-own [
@@ -230,6 +232,10 @@ end
 
 to create-wave [pred]
   let dist [distancexy nest-x-coord nest-y-coord] of pred
+  if empty? dist
+  [
+    stop
+  ]
   let dist-value first dist
 
   let threat first [predator-type] of pred
@@ -300,7 +306,10 @@ to alerted
         let predator-t [predator?] of t
         let predator-value first predator-t
 
-        create-wave predator-value
+        if not empty? predator-t
+        [
+          create-wave predator-value
+        ]
       ]
     ifelse adult? and not babysitter?
     [act_against_predators]
@@ -357,6 +366,7 @@ to reproduce
   ]
   set reproduction-wait-tick? 200
 end
+
 ; Pour les prédateurs
 
 to predator-behavior
@@ -366,14 +376,29 @@ to predator-behavior
   ask serpents
   [
     serpents-behavior
+    set despawn-timer despawn-timer - 1
+    if despawn-timer <= 0
+    [
+      die
+    ]
   ]
   ask rapaces
   [
     rapaces-behavior
+    set despawn-timer despawn-timer - 1
+    if despawn-timer <= 0
+    [
+      die
+    ]
   ]
   ask chacals
   [
     chacal-behavior
+    set despawn-timer despawn-timer - 1
+    if despawn-timer <= 0
+    [
+      die
+    ]
   ]
 end
 
@@ -423,7 +448,8 @@ to rapaces-behavior
     ]
   ]
   any? cibles and random 100 < 5 [
-    set cible min-one-of cibles [distance myself]
+    let percept acuité
+      set cible min-one-of cibles with [hide? < percept] [distance myself]
   ]
   ; else
   [
@@ -459,7 +485,12 @@ end
 
 ;réactions face aux prédateurs
 to act_against_predators
-  let priority_wave max-one-of waves [[danger-level] of one-of predator?]
+  let wav waves with [any? predator?]
+  let priority_wave max-one-of wav [[danger-level] of one-of predator?]
+  if priority_wave = nobody
+  [
+    stop
+  ]
   let lvl [danger-level] of [one-of predator?] of priority_wave
   ifelse lvl > 2 ;chacal : danger immédiat
   [
@@ -544,6 +575,7 @@ to spawn-snake
     set danger-level 1
     set spook-amount 10 * random-float 1
     set predator-type "serpent"
+    set despawn-timer 500;
   ]
 end
 
@@ -558,6 +590,8 @@ to spawn-rapace
     set danger-level 2
     set spook-amount 15 * random-float 1
     set predator-type "rapace"
+    set despawn-timer 500;
+    set acuité 0
   ]
 end
 
@@ -572,6 +606,7 @@ to spawn-chacal
     set danger-level 3
     set spook-amount 20 * random-float 1
     set predator-type "chacal"
+    set despawn-timer 500;
   ]
 end
 
@@ -834,7 +869,7 @@ proba-nourriture
 proba-nourriture
 0
 100
-66.0
+70.0
 1
 1
 NIL
