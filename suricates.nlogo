@@ -385,8 +385,8 @@ to predator-behavior
     set despawn-timer despawn-timer - 1
     if despawn-timer <= 0
     [
-      die
       kill-waves
+      die
     ]
   ]
   ask rapaces
@@ -396,7 +396,6 @@ to predator-behavior
     if despawn-timer <= 0
     [
       kill-waves
-      print count waves
       die
     ]
   ]
@@ -406,8 +405,8 @@ to predator-behavior
     set despawn-timer despawn-timer - 1
     if despawn-timer <= 0
     [
-      die
       kill-waves
+      die
     ]
   ]
 end
