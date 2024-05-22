@@ -454,6 +454,10 @@ to rapaces-behavior
     fd 1
     if distance cible < 1
     [
+      ask cible
+      [
+        die
+      ]
       set cible nobody
     ]
   ]
@@ -480,7 +484,15 @@ to chacal-behavior
   [
     let target min-one-of cibles [distance myself]
     face target
-    fd 0.6
+    fd 0.5
+    if distance target < 1
+    [
+      ask target
+      [
+        die
+      ]
+      set target nobody
+    ]
   ]
   ; else
   [
@@ -489,7 +501,7 @@ to chacal-behavior
     if xcor >= max-pxcor * 0.95   [set heading (random-normal 270 2)]
     if xcor <= min-pxcor * 0.95   [set heading (random-normal 90 2)]
     if ycor <= min-pycor * 0.95   [set heading (random-normal 0 2)]
-    fd 0.6
+    fd 0.5
   ]
 end
 
@@ -814,7 +826,7 @@ BUTTON
 82
 228
 115
-spawn-tiger
+spawn-chacal
 spawn-chacal
 NIL
 1
