@@ -117,7 +117,7 @@ end
 to end-sentinelle
   ask suricates with [ sentinel? ]
   [
-    if sentinel_time? > 6
+    if sentinel_time? > 40
     [
       set sentinel? false
       set has-been? 100
@@ -217,12 +217,13 @@ to eat
   if nourished? > 2 [set nourished? (nourished? - 2)]
   if (random 100) < proba-nourriture
   [
+    if (random 1000 < 10) [ check-surrounding ]
     set nourished? (nourished? + (random 10) )
   ]
 end
 
 to be-sentinel
-  if sentinel_time? > 50 [ end-sentinelle ]
+  if sentinel_time? > 90 [ end-sentinelle ]
   if sentinel? [ set sentinel_time? (sentinel_time? + 1) ]
   if not sentinel? and nourished? > 100 and (random 100 < 20) and not alerted? and adult?
   [
@@ -280,18 +281,16 @@ to move-wave
 end
 
 to check-surrounding
-  ask suricates with [sentinel?]
+  let all-wave-predators (turtle-set [predator?] of waves)
+  let nearby-predators predators in-radius acuité with [not member? self all-wave-predators]
+  if count nearby-predators > 0
   [
-    let nearby-predators predators in-radius acuité
-    if count nearby-predators > 0
-    [
-      foreach (list nearby-predators) [
-        t ->
-        create-wave t
-      ]
-
-      set alerted? true
+    foreach (list nearby-predators) [
+      t ->
+      create-wave t
     ]
+
+    set alerted? true
   ]
 end
 
@@ -303,14 +302,15 @@ to alerted
   if hide? = 0 and alerted? and (not ([nest?] of patch-here))
   [
     foreach (list w) [
-        t ->
-        let predator-t [predator?] of t
+      t ->
+      let predator-t [predator?] of t
       if not empty? predator-t
         [
           let predator-value first predator-t
           create-wave predator-value
         ]
       ]
+    check-surrounding
     ifelse adult? and not babysitter?
     [act_against_predators]
     [return-to-nest]
@@ -368,10 +368,7 @@ to reproduce
 end
 
 to kill-waves [detected]
-  ask waves [
-    print first predator?
-  ]
-  ask waves with [predator? = detected]
+  ask waves with [one-of predator? = detected]
   [
     die
   ]
@@ -769,7 +766,7 @@ perception
 perception
 1
 45
-29.5
+20.0
 0.5
 1
 NIL
