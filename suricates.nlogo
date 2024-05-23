@@ -82,7 +82,7 @@ to setup
     set nourished? 0
     set sentinel_time? 0
     set has-been? 0
-    set reproduction-wait-tick? 10 ; int: nombre de ticks avant que le suricate puisse se reproduire à nouveau
+    set reproduction-wait-tick? 100 ; int: nombre de ticks avant que le suricate puisse se reproduire à nouveau
     set is-reproducing? false
     set female? (random-float 1.0 < 0.5)
     set babysitter? false
@@ -191,6 +191,16 @@ to go ; TODO
   predator-behavior
   if any? suricates with [not adult?] and not any? suricates with [babysitter?] [
     assign-babysitter
+  ]
+  ; remove babysitter if no more kids
+  if not any? suricates with [not adult?] [
+    let babysitter one-of suricates with [babysitter?]
+    if babysitter != nobody [
+      ask babysitter [
+        set babysitter? false
+        set color brown
+      ]
+    ]
   ]
   tick
 end
@@ -332,9 +342,6 @@ end
 ;;; Pour la queen
 to queen-behavior
   ask suricates with [queen?] [
-    if reproduction-wait-tick? <= 0 and nourished? > 50 and any? suricates with [king?] in-radius 2 [
-      reproduce
-    ]
     let suricate-to-kill suricates with [is-reproducing?] in-radius 2
     if suricate-to-kill != nobody [
       ask suricate-to-kill [
@@ -348,12 +355,12 @@ end
 ;;; Pour le king
 to king-behavior
   ask suricates with [king?] [
-      if reproduction-wait-tick? <= 0 and nourished? > 50 and any? suricates with [queen?] in-radius 2 [
-        reproduce
+    set reproduction-wait-tick? reproduction-wait-tick? - 1
+    if reproduction-wait-tick? <= 0 and nourished? > 50  [
+      reproduce
      ]
   ]
 end
-
 to reproduce
   hatch 1 [
     set shape "dog"
@@ -371,10 +378,9 @@ to reproduce
     set has-been? 0
     set reproduction-wait-tick? 100
     set age? 0
-    set hide? 0
     move-to one-of patches with [nest?]
   ]
-  set reproduction-wait-tick? 200
+  set reproduction-wait-tick? 100
 end
 
 to kill-waves [detected]
@@ -698,7 +704,7 @@ population
 population
 0
 30
-18.0
+30.0
 1
 1
 NIL
@@ -792,7 +798,7 @@ perception
 perception
 1
 45
-20.0
+12.5
 0.5
 1
 NIL
@@ -905,7 +911,7 @@ proba-nourriture
 proba-nourriture
 0
 100
-70.0
+66.0
 1
 1
 NIL
