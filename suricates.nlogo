@@ -299,8 +299,17 @@ to alerted
   ifelse count w > 0 [ set alerted? true ]
   [ set alerted? false ]
 
-  if hide? = 0 and alerted? and (not ([nest?] of patch-here))
+  let close_snake? false
+  if any? predators with [predator-type = "serpent" and distancexy nest-x-coord nest-y-coord < 20]
+  [set close_snake? true]
+
+  if any? predators with [predator-type = "chacal"] or count predators = 0 or close_snake?
+  [set hide? 0]
+
+  if alerted? and (not ([nest?] of patch-here))
   [
+    if hide? = 0
+    [
     foreach (list w) [
       t ->
       let predator-t [predator?] of t
@@ -310,6 +319,7 @@ to alerted
           create-wave predator-value
         ]
       ]
+    ]
     check-surrounding
     ifelse adult? and not babysitter?
     [act_against_predators]
@@ -519,7 +529,7 @@ to act_against_predators
     return-to-nest
   ]
   [
-    ifelse lvl = 1;serpent uniquement, proche
+    ifelse lvl = 1;serpent uniquement
     [
       let serpent [predator?] of priority_wave
       if audace > 5
@@ -534,7 +544,11 @@ to act_against_predators
         return-to-nest
       ]
       [
-        set hide? random-float 1
+        let close_snake? false
+        if any? predators with [predator-type = "serpent" and distancexy nest-x-coord nest-y-coord < 20]
+        [set close_snake? true]
+        if close_snake? = false
+        [set hide? random-float 1]
       ]
     ]
   ]
@@ -613,7 +627,7 @@ to spawn-rapace
     set spook-amount 15 * random-float 1
     set predator-type "rapace"
     set despawn-timer 500;
-    set acuité random-float 1
+    set acuité random-float 0.2
   ]
 end
 
