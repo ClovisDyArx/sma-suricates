@@ -351,6 +351,8 @@ to reproduce
     set has-been? 0
     set reproduction-wait-tick? 500
     set age? 0
+    set female? (random-float 1.0 < 0.5)
+    set babysitter? false
     move-to one-of patches with [nest?]
   ]
   set reproduction-wait-tick? 500
