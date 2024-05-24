@@ -136,7 +136,7 @@ to setup-alphas
   [
     set queen? true
     set color orange
-    set audace courage
+    set audace 0.2
   ]
   ask one-of suricates with [not queen? and not female?]
   [
