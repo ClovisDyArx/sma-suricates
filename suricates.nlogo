@@ -329,7 +329,7 @@ end
 to king-behavior
   ask suricates with [king?] [
     set reproduction-wait-tick? reproduction-wait-tick? - 1
-    if reproduction-wait-tick? <= 0 and nourished? > 50  [
+    if reproduction-wait-tick? <= 0 [
       reproduce
      ]
   ]
