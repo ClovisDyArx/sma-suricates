@@ -205,7 +205,7 @@ to assign-babysitter
   if candidate != nobody [
     ask candidate [
       set babysitter? true
-      set color blue
+      set color green
     ]
   ]
 end
