@@ -170,7 +170,7 @@ to go ; TODO
     ]
     if not adult? [
       set age? age? + 1
-      if age? > 50 [
+      if age? > 100 [
         set adult? true
         set size 2.5
       ]
