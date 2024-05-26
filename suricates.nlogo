@@ -602,7 +602,7 @@ population
 population
 0
 30
-30.0
+33.0
 1
 1
 NIL
@@ -793,8 +793,8 @@ MONITOR
 127
 84
 172
-NIL
 population
+count suricates
 17
 1
 11
@@ -815,7 +815,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot count turtles"
+"default" 1.0 0 -16777216 true "" "plot count suricates"
 
 @#$#@#$#@
 ## WHAT IS IT?
