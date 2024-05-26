@@ -1,1137 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;
 ; ┌───────────────┐
 ; │               │
@@ -1162,6 +28,8 @@ suricates-own
   female?
   age? ; int: age du surricate pour qui augmente a chaque tick jusqu'a adulte
   babysitter? ; bool: reste dans le nid pour s'occuper des enfants
+
+  hide? ;float [0,1] : à quel point le suricate est camouflé
 ]
 
 ;; sûrement mieux de faire des sliders pour danger et spook..
@@ -1171,6 +39,9 @@ predators-own
   danger-level ; float : niveau de danger représenté
   spook-amount ; float : nombre de suricates nécessaire pour l'effrayer
   predator-type ; string : type du prédateur (serpent, rapace, chacal)
+  acuité ; float [0, 1] : perception du prédateur pour trouver les suricates camouflés
+  predator-type ; string : type du prédateur (serpent, rapace, chacal)
+  despawn-timer ; int: temps avant le despawn du prédateur
 ]
 
 patches-own [
@@ -1216,6 +87,7 @@ to setup
     set is-reproducing? false
     set female? (random-float 1.0 < 0.5)
     set babysitter? false
+    set hide? 0
   ]
   setup-alphas
 end
@@ -1240,7 +112,7 @@ to setup-sentinelle
   if has-been? = 0 and (not any? suricates with [sentinel?])
   [
     set sentinel? true
-    set color white
+    set color blue
   ]
 end
 
@@ -1294,7 +166,7 @@ to go
   ask suricates
   [
     if nourished? > 2 [set nourished? (nourished? - 2)] ;; un tour consomme de la nourriture
-    if not sentinel? or alerted? and adult? and not babysitter? [
+    if not sentinel? or alerted? and adult? and not babysitter? and hide? = 0 [
       wiggle
       eat
     ]
@@ -1347,20 +219,24 @@ end
 to check-add-king-queen
   let queen-exist one-of suricates with [queen?]
   if queen-exist = nobody [
-    ask one-of suricates with [female?]
-    [
-      set queen? true
-      set color orange
-      set audace 0.2
+    let potential-queen one-of suricates with [female?]
+    if potential-queen != nobody [
+      ask potential-queen [
+        set queen? true
+        set color orange
+        set audace 0.2
+      ]
     ]
   ]
   let king-exist one-of suricates with [king?]
   if king-exist = nobody [
-    ask one-of suricates with [not queen? and not female?]
-    [
-      set king? true
-      set color yellow
-      set audace courage
+    let potential-king one-of suricates with [not queen? and not female?]
+    if potential-king != nobody [
+      ask potential-king [
+        set king? true
+        set color yellow
+        set audace courage
+      ]
     ]
   ]
 end
@@ -1397,38 +273,46 @@ to be-sentinel
   if has-been? > 0 [ set has-been? (has-been? - 1) ]
   if sentinel? [ set sentinel_time? (sentinel_time? + 1) ]
 
-  if not sentinel? and nourished? > 100 and (random 100 < 20) and not alerted?
+  if not sentinel? and nourished? > 100 and (random 100 < 20) and not alerted? and adult?
   [
     setup-sentinelle
   ]
 end
 
-;; permet de créer une alerte avec ce prédateur précis
+;; permet de créer une alerte pour ce prédateur (et de gérer la priorité des alertes)
 to create-wave [pred]
-  let acuity acuité
-  hatch-waves 1
+  let dist [distancexy nest-x-coord nest-y-coord] of pred
+  if empty? dist
   [
-    set shape "wave"
-    set color red
-    set size 1
-    set duration acuity
-
-    let dist [distancexy nest-x-coord nest-y-coord] of pred
-    let dist-value first dist
-    set danger-level? get-level-danger (first [predator-type] of pred) dist-value
-
-    set predator? pred
+    stop
   ]
-  move-wave
+  let dist-value first dist
+  let threat first [predator-type] of pred
+  let close-snake? any? waves with [
+    get-level-danger [predator-type] of predator? dist = 1
+  ]
+  if threat = "chacal" or (not any? waves with [[predator-type] of predator? = "chacal"] and (threat = "serpent" or (threat = "rapace" and not close-snake?)))
+  [
+    let acuity acuité
+    hatch-waves 1
+    [
+      set shape "wave"
+      set color red
+      set size 1
+      set duration acuity
+      set danger-level? get-level-danger (first [predator-type] of pred) dist-value
+      set predator? pred
+    ]
+    move-wave
+  ]
 end
 
-;; récupère la distance entre le prédateur et le nid
+;; récupère le niveau de danger à partir du type de prédateur et de sa distance par rapport au nid
 to-report get-level-danger [type-p dist]
-  ifelse type-p = "serpent" [ report 2]
-  [
-    ifelse dist < 20 [ report 2 ]
-    [ report 1 ]
+  ifelse type-p = "serpent" [
+    ifelse dist < 20 [ report 1 ][ report 2]
   ]
+  [ report 0 ]
 end
 
 ;; change l'aspect de l'alerte et la fait mourir lorsqu'elle a atteint la fin de sa vie
@@ -1445,35 +329,53 @@ end
 
 ;; vérifie les alentoursà la recherche d'un prédateur et donne l'alerte si l'un d'eux est trouvé
 to check-surrounding
-  ask suricates with [sentinel?]
-  [
-    let nearby-predators predators in-radius acuité
-    if count nearby-predators > 0
-    [
-      foreach (list nearby-predators) [
-        t ->
-        create-wave t
-      ]
+  let all-wave-predators (turtle-set [predator?] of waves)
 
-      set alerted? true
+  ;; ne garde que les prédateurs qui ne sont pas encore concerné par des alertes pour éviter trop de répétitions
+  let nearby-predators predators in-radius acuité with [not member? self all-wave-predators]
+
+  if count nearby-predators > 0
+  [
+    foreach (list nearby-predators) [
+      t ->
+      create-wave t
     ]
+    set alerted? true
   ]
 end
 
+;; gère l'état d'alerte des suricates et la priorité des actions face aux prédateurs
 to alerted
   let w waves
-  if count w > 0 [set alerted? true]
+  ifelse count w > 0 [ set alerted? true ]
+  [ set alerted? false ]
+
+  let close_snake? false
+
+  if any? predators with [predator-type = "serpent" and distancexy nest-x-coord nest-y-coord < 20]
+  [set close_snake? true]
+
+  if any? predators with [predator-type = "chacal"] or count predators = 0 or close_snake?
+  [set hide? 0]
 
   if alerted? and (not ([nest?] of patch-here))
   [
+    if hide? = 0
+    [
     foreach (list w) [
-        t ->
-        let predator-t [predator?] of t
-        let predator-value first predator-t
-
-        create-wave predator-value
+      t ->
+      let predator-t [predator?] of t
+      if not empty? predator-t
+        [
+          let predator-value first predator-t
+          create-wave predator-value
+        ]
       ]
-    return-to-nest
+    ]
+    check-surrounding
+    ifelse adult? and not babysitter?
+    [act_against_predators]
+    [return-to-nest]
   ]
 end
 
@@ -1506,6 +408,7 @@ to king-behavior
      ]
   ]
 end
+
 to reproduce
   hatch 1 [
     set shape "dog"
@@ -1531,6 +434,14 @@ to reproduce
 end
 ; Pour les prédateurs
 
+;; tue les alertes associées à un prédateur (utile lors de la disparition de l'un d'eux)
+to kill-waves [detected]
+  ask waves with [one-of predator? = detected]
+  [
+    die
+  ]
+end
+
 to predator-behavior
   let serpents predators with [predator-type = "serpent"]
   let rapaces predators with [predator-type = "rapace"]
@@ -1538,20 +449,37 @@ to predator-behavior
   ask serpents
   [
     serpents-behavior
+    set despawn-timer despawn-timer - 1
+    if despawn-timer <= 0
+    [
+      kill-waves self
+      die
+    ]
   ]
   ask rapaces
   [
     rapaces-behavior
+    set despawn-timer despawn-timer - 1
+    if despawn-timer <= 0
+    [
+      kill-waves self
+      die
+    ]
   ]
   ask chacals
   [
     chacal-behavior
+    set despawn-timer despawn-timer - 1
+    if despawn-timer <= 0
+    [
+      kill-waves self
+      die
+    ]
   ]
 end
 
 to serpents-behavior
   let cibles suricates in-radius 10 ; and not standing-still
-
   ; Si suricate vu
   (ifelse
   cible != nobody [
@@ -1583,7 +511,6 @@ end
 
 to rapaces-behavior
   let cibles suricates in-radius 20 with [not nest?] ; and not standing-still
-
   ; Si suricate vu
   (ifelse
   cible != nobody [
@@ -1591,11 +518,16 @@ to rapaces-behavior
     fd 1
     if distance cible < 1
     [
+      ask cible
+      [
+        die
+      ]
       set cible nobody
     ]
   ]
   any? cibles and random 100 < 5 [
-    set cible min-one-of cibles [distance myself]
+    let percept acuité
+      set cible min-one-of cibles with [hide? < percept] [distance myself]
   ]
   ; else
   [
@@ -1610,13 +542,20 @@ end
 
 to chacal-behavior
   let cibles suricates in-radius 10 with [not nest?]
-
   ; Si suricate vu
   ifelse any? cibles
   [
     let target min-one-of cibles [distance myself]
     face target
-    fd 0.6
+    fd 0.5
+    if distance target < 1
+    [
+      ask target
+      [
+        die
+      ]
+      set target nobody
+    ]
   ]
   ; else
   [
@@ -1625,21 +564,48 @@ to chacal-behavior
     if xcor >= max-pxcor * 0.95   [set heading (random-normal 270 2)]
     if xcor <= min-pxcor * 0.95   [set heading (random-normal 90 2)]
     if ycor <= min-pycor * 0.95   [set heading (random-normal 0 2)]
-    fd 0.6
+    fd 0.5
   ]
 end
 
-;;TODO: ajouter un moyen de savoir si tout le monde est au nid.
-;;TODO: ajouter un moyen de savoir où se trouve le dernier prédateur rencontré.
-;;;;;;;;;;;;;;;;;;;;;;
-; ┌──────────┐
-; │          │
-; │   Ant :  │
-; │          │
-; └──────────┘
-;;;;;;;;;;;;;;;;;;;;;;
-
-;;; Code repris et adapté des "Ants":
+;réactions face aux prédateurs
+to act_against_predators
+  let wav waves with [any? predator?]
+  let priority_wave max-one-of wav [[danger-level] of one-of predator?]
+  if priority_wave = nobody
+  [
+    stop
+  ]
+  let lvl [danger-level] of [one-of predator?] of priority_wave
+  ifelse lvl > 2 ;chacal : danger immédiat
+  [
+    return-to-nest
+  ]
+  [
+    ifelse lvl = 1;serpent uniquement
+    [
+      let serpent [predator?] of priority_wave
+      if audace > 5
+      [
+        face one-of serpent
+        fd 1
+      ]
+    ]
+    [
+      ifelse distancexy nest-x-coord nest-y-coord < 20
+      [
+        return-to-nest
+      ]
+      [
+        let close_snake? false
+        if any? predators with [predator-type = "serpent" and distancexy nest-x-coord nest-y-coord < 20]
+        [set close_snake? true]
+        if close_snake? = false
+        [set hide? random-float 1]
+      ]
+    ]
+  ]
+end
 
 to return-to-nest
   if not nest?
@@ -1686,6 +652,7 @@ to spawn-snake
     set danger-level 1
     set spook-amount 10 * random-float 1
     set predator-type "serpent"
+    set despawn-timer 500;
   ]
 end
 
@@ -1697,9 +664,11 @@ to spawn-rapace
     set cible nobody
     move-to one-of patches with [not nest?]
     set color white
-    set danger-level 1
+    set danger-level 2
     set spook-amount 15 * random-float 1
     set predator-type "rapace"
+    set despawn-timer 500;
+    set acuité random-float 0.2
   ]
 end
 
@@ -1711,9 +680,10 @@ to spawn-chacal
     set cible nobody
     move-to one-of patches with [not nest?]
     set color white
-    set danger-level 2
+    set danger-level 3
     set spook-amount 20 * random-float 1
     set predator-type "chacal"
+    set despawn-timer 500;
   ]
 end
 @#$#@#$#@
