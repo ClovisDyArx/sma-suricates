@@ -241,6 +241,7 @@ to check-add-king-queen
   ]
 end
 
+;choix du babysitter
 to assign-babysitter
   let candidate one-of suricates with [adult? and not sentinel? and not king? and not queen? and (hide? = 0)]
   if candidate != nobody [
@@ -411,6 +412,7 @@ to king-behavior
   ]
 end
 
+;création des petits suricates
 to reproduce
   hatch 1 [
     set shape "dog"
@@ -443,6 +445,7 @@ to kill-waves [detected]
   ]
 end
 
+;comportement des prédateurs
 to predator-behavior
   let serpents predators with [predator-type = "serpent"]
   let rapaces predators with [predator-type = "rapace"]
@@ -479,6 +482,7 @@ to predator-behavior
   ]
 end
 
+;comportement des ssserpents
 to serpents-behavior
   let cibles suricates in-radius 10 ; and not standing-still
   ; Si suricate vu
@@ -519,6 +523,7 @@ to serpents-behavior
   ])
 end
 
+;comportement des rapaces
 to rapaces-behavior
   let cibles suricates in-radius 20 with [not nest?] ; and not standing-still
   ; Si suricate vu
@@ -550,6 +555,7 @@ to rapaces-behavior
   ])
 end
 
+;comportement des chacals
 to chacal-behavior
   let cibles suricates in-radius 10 with [not nest?]
   ; Si suricate vu
@@ -594,10 +600,22 @@ to act_against_predators
   [
     ifelse lvl = 1;serpent uniquement
     [
-      let serpent [predator?] of priority_wave
+      let snakes predators with [predator-type = "serpent"]
+      let closest-snake one-of [predator?] of priority_wave
+      ask snakes [
+        let min-distance 100
+        ask other snakes
+        [
+          let dist distancexy nest-x-coord nest-y-coord
+          if dist < min-distance [
+            set min-distance dist
+            set closest-snake self
+          ]
+        ]
+      ]
       if audace > 5
       [
-        face one-of serpent
+        face closest-snake
         fd 1
       ]
     ]
