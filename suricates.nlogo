@@ -197,7 +197,28 @@ to go ; TODO
       ]
     ]
   ]
+  check-add-king-queen
   tick
+end
+to check-add-king-queen
+  let queen-exist one-of suricates with [queen?]
+  if queen-exist = nobody [
+    ask one-of suricates with [female?]
+    [
+      set queen? true
+      set color orange
+      set audace 0.2
+    ]
+  ]
+  let king-exist one-of suricates with [king?]
+  if king-exist = nobody [
+    ask one-of suricates with [not queen? and not female?]
+    [
+      set king? true
+      set color yellow
+      set audace courage
+    ]
+  ]
 end
 
 to assign-babysitter
@@ -543,22 +564,6 @@ to spawn-chacal
     set spook-amount 20 * random-float 1
     set predator-type "chacal"
   ]
-end
-
-;;;;;;;;;;;;;;;;;;;;;;
-; ┌──────────┐
-; │          │
-; │ Bonus :  │
-; │          │
-; └──────────┘
-;;;;;;;;;;;;;;;;;;;;;;
-
-to spawn-meerkats
-  ; TODO
-end
-
-to start-war
-  ; TODO
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
