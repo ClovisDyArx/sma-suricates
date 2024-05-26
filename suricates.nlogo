@@ -264,7 +264,7 @@ to eat
   if (random 100) < proba-nourriture and not sentinel?
   [
     set nourished? (nourished? + (random 10) )
-    if (random 100 < 40) [check-surrounding]
+    if (random 100 < 20) [check-surrounding]
   ]
 end
 
@@ -486,13 +486,13 @@ to serpents-behavior
   cible != nobody [
     face cible
     rt 180
-    fd 1
+    fd 1.5
     if distance cible > 30
     [
       set cible nobody
     ]
   ]
-  any? cibles and count cibles > spook-amount + 20 [
+  any? cibles and count cibles > spook-amount + 5 [
     set cible min-one-of cibles [distance myself]
   ]
   any? cibles [
@@ -717,9 +717,9 @@ ticks
 
 SLIDER
 0
-180
+197
 172
-213
+230
 population
 population
 0
@@ -732,9 +732,9 @@ HORIZONTAL
 
 SLIDER
 0
-249
+262
 172
-282
+295
 nest-x-coord
 nest-x-coord
 -45
@@ -747,9 +747,9 @@ HORIZONTAL
 
 SLIDER
 174
-249
+262
 346
-282
+295
 nest-y-coord
 nest-y-coord
 -45
@@ -762,9 +762,9 @@ HORIZONTAL
 
 BUTTON
 64
-10
+30
 127
-43
+63
 GO !
 go
 T
@@ -779,9 +779,9 @@ NIL
 
 BUTTON
 0
-10
+30
 63
-43
+63
 Init
 setup
 NIL
@@ -796,9 +796,9 @@ NIL
 
 SLIDER
 0
-323
+158
 172
-356
+191
 courage
 courage
 1
@@ -810,10 +810,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-176
-323
-348
-356
+174
+158
+346
+191
 perception
 perception
 1
@@ -826,9 +826,9 @@ HORIZONTAL
 
 TEXTBOX
 0
-305
+140
 150
-323
+158
 Propriétés Suricates
 12
 0.0
@@ -836,9 +836,9 @@ Propriétés Suricates
 
 TEXTBOX
 0
-232
+245
 150
-250
+263
 Emplacement Terrier
 12
 0.0
@@ -846,10 +846,10 @@ Emplacement Terrier
 
 BUTTON
 0
-82
+92
 116
-115
-spawn-snake
+125
+serpent
 spawn-snake
 NIL
 1
@@ -863,10 +863,10 @@ NIL
 
 BUTTON
 120
-82
+92
 228
-115
-spawn-tiger
+125
+chacal
 spawn-chacal
 NIL
 1
@@ -879,10 +879,10 @@ NIL
 1
 
 SLIDER
-219
-180
-391
-213
+173
+197
+345
+230
 proba-nourriture
 proba-nourriture
 0
@@ -895,10 +895,10 @@ HORIZONTAL
 
 BUTTON
 231
-83
+93
 337
-116
-NIL
+126
+rapace
 spawn-rapace
 NIL
 1
@@ -911,10 +911,10 @@ NIL
 1
 
 PLOT
-1228
-26
-1428
-176
+0
+331
+347
+597
 population
 NIL
 NIL
@@ -927,6 +927,26 @@ false
 "" ""
 PENS
 "default" 1.0 0 -16777216 true "" "plot count suricates"
+
+TEXTBOX
+0
+73
+150
+91
+Apparition prédateurs
+10
+0.0
+1
+
+TEXTBOX
+0
+10
+150
+28
+Initialisation
+10
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
