@@ -179,7 +179,7 @@ to go
 
     ; random reproduction between 2 surricates not queen and king
     if not king? and not queen? and female? and not sentinel? and not alerted? and nourished? > 50 and any? suricates with [not female? and not king? and not queen?] in-radius 2 [
-      if random-float 1.0 < 0.8 [
+      if random-float 1.0 < 0.05 [
         set is-reproducing? true
       ]
     ]
@@ -390,7 +390,7 @@ to queen-behavior
       if hide? = 0 and ((count suricates) < 30) [move-to one-of patches with [nest?]]
       set reproduction-wait-tick? 500
     ]
-    let suricate-to-kill suricates with [is-reproducing?] in-radius 2
+    let suricate-to-kill suricates with [is-reproducing? and not alerted?] in-radius 2
     if suricate-to-kill != nobody [
       ask suricate-to-kill [
         die
@@ -827,7 +827,7 @@ perception
 perception
 1
 22
-10.5
+22.0
 0.5
 1
 NIL
@@ -956,6 +956,17 @@ Initialisation
 10
 0.0
 1
+
+MONITOR
+358
+333
+456
+378
+population
+count suricates
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
