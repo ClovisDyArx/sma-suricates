@@ -492,12 +492,21 @@ to serpents-behavior
       set cible nobody
     ]
   ]
-  any? cibles and count cibles > spook-amount + 5 [
+  any? cibles and count cibles > spook-amount + 5[
     set cible min-one-of cibles [distance myself]
   ]
-  any? cibles [
-    face min-one-of cibles [distance myself]
+  any? cibles with [not adult?] [
+    let tempCible min-one-of cibles with [not adult?] [distance myself]
+    face tempCible
     fd 1
+    if distance tempCible < 1
+    [
+      ask tempCible
+      [
+        die
+      ]
+      set cible nobody
+    ]
   ]
   ; else
   [
@@ -724,7 +733,7 @@ population
 population
 0
 30
-33.0
+30.0
 1
 1
 NIL
