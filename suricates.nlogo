@@ -548,7 +548,7 @@ to chacal-behavior
     let target min-one-of cibles [distance myself]
     face target
     fd 0.5
-    if distance target < 1
+    if distance target < 1 and (distancexy nest-x-coord nest-y-coord > 10 )
     [
       ask target
       [
