@@ -242,7 +242,7 @@ to check-add-king-queen
 end
 
 to assign-babysitter
-  let candidate one-of suricates with [adult? and not sentinel? and not king? and not queen? and not hide?]
+  let candidate one-of suricates with [adult? and not sentinel? and not king? and not queen? and (hide? = 0)]
   if candidate != nobody [
     ask candidate [
       set babysitter? true
@@ -387,7 +387,7 @@ to queen-behavior
   ask suricates with [queen?] [
     set reproduction-wait-tick? reproduction-wait-tick? - 1
     if reproduction-wait-tick? <= 0 [
-      if not hide? [move-to one-of patches with [nest?]]
+      if hide? = 0 and ((count suricates) < 30) [move-to one-of patches with [nest?]]
       set reproduction-wait-tick? 500
     ]
     let suricate-to-kill suricates with [is-reproducing?] in-radius 2
@@ -405,7 +405,7 @@ to king-behavior
   ask suricates with [king?] [
     set reproduction-wait-tick? reproduction-wait-tick? - 1
     if reproduction-wait-tick? <= 0 [
-      if not hide? [reproduce]
+      if hide? = 0 and ((count suricates) < 30) [reproduce]
       set reproduction-wait-tick? 500
      ]
   ]
