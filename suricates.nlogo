@@ -264,6 +264,7 @@ to eat
   if (random 100) < proba-nourriture and not sentinel?
   [
     set nourished? (nourished? + (random 10) )
+    if (random 100 < 40) [check-surrounding]
   ]
 end
 
@@ -816,8 +817,8 @@ SLIDER
 perception
 perception
 1
-45
-37.0
+22
+10.5
 0.5
 1
 NIL
