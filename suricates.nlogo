@@ -541,8 +541,10 @@ to rapaces-behavior
     ]
   ]
   any? cibles and random 100 < 5 [
+    let filtered-cibles filter [t -> [distancexy nest-x-coord nest-y-coord] of t > 10] sort cibles
+    let agent-set-cibles turtle-set filtered-cibles
     let percept acuité
-      set cible min-one-of cibles with [hide? < percept] [distance myself]
+      set cible min-one-of agent-set-cibles with [hide? < percept] [distance myself]
   ]
   ; else
   [
