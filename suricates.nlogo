@@ -564,7 +564,7 @@ to chacal-behavior
     let target min-one-of cibles [distance myself]
     face target
     fd 0.5
-    if distance target < 1 and (distancexy nest-x-coord nest-y-coord > 10 )
+    if distance target < 1 and ([distancexy nest-x-coord nest-y-coord] of target > 10 )
     [
       ask target
       [
@@ -751,7 +751,7 @@ population
 population
 0
 30
-30.0
+14.0
 1
 1
 NIL
@@ -766,7 +766,7 @@ nest-x-coord
 nest-x-coord
 -45
 45
-45.0
+-1.0
 1
 1
 NIL
@@ -781,7 +781,7 @@ nest-y-coord
 nest-y-coord
 -45
 45
-45.0
+0.0
 1
 1
 NIL
@@ -845,7 +845,7 @@ perception
 perception
 1
 22
-22.0
+7.0
 0.5
 1
 NIL
