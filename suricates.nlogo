@@ -388,7 +388,7 @@ to queen-behavior
   ask suricates with [queen?] [
     set reproduction-wait-tick? reproduction-wait-tick? - 1
     if reproduction-wait-tick? <= 0 [
-      if hide? = 0 and ((count suricates) < 30) [move-to one-of patches with [nest?]]
+      if hide? = 0 and ((count suricates) < 30) and not alerted? and (count suricates > 1) [move-to one-of patches with [nest?]]
       set reproduction-wait-tick? 500
     ]
     let suricate-to-kill suricates with [is-reproducing? and not alerted?] in-radius 2
@@ -406,7 +406,7 @@ to king-behavior
   ask suricates with [king?] [
     set reproduction-wait-tick? reproduction-wait-tick? - 1
     if reproduction-wait-tick? <= 0 [
-      if hide? = 0 and ((count suricates) < 30) [reproduce]
+      if hide? = 0 and ((count suricates) < 30) and ((count suricates with [queen?]) > 0) and not alerted? [reproduce]
       set reproduction-wait-tick? 500
      ]
   ]
@@ -753,7 +753,7 @@ population
 population
 0
 30
-14.0
+3.0
 1
 1
 NIL
@@ -768,7 +768,7 @@ nest-x-coord
 nest-x-coord
 -45
 45
--1.0
+0.0
 1
 1
 NIL
@@ -847,7 +847,7 @@ perception
 perception
 1
 22
-7.0
+12.0
 0.5
 1
 NIL
@@ -916,7 +916,7 @@ proba-nourriture
 proba-nourriture
 0
 100
-76.0
+50.0
 1
 1
 NIL
